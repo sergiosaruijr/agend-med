@@ -22,8 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label";
 
-const registerSchema = z.object({
-  name: z.string().trim().min(1, { message: "Nome é obrigatório" }).max(50),
+const loginSchema = z.object({
   email: z
     .string()
     .trim()
@@ -35,17 +34,16 @@ const registerSchema = z.object({
     .min(8, { message: "Senha deve ter no mínimo 8 caracteres" }),
 });
 
-const SingUpForm = () => {
-  const form = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
+const LoginForm = () => {
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerSchema>) {
+  function onSubmit(values: z.infer<typeof loginSchema>) {
     console.log(values);
   }
 
@@ -54,25 +52,12 @@ const SingUpForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader>
-            <CardTitle>Criar Conta</CardTitle>
+            <CardTitle>Login</CardTitle>
             <CardDescription className="mb-4">
-              Crie uma conta para continuar.
+              Faça login para continuar.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Digite o seu nome" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="email"
@@ -106,7 +91,7 @@ const SingUpForm = () => {
           </CardContent>
           <CardFooter>
             <Button type="submit" className="mt-4 w-full">
-              Criar conta
+              Entrar
             </Button>
           </CardFooter>
         </form>
@@ -115,4 +100,4 @@ const SingUpForm = () => {
   );
 };
 
-export default SingUpForm;
+export default LoginForm;
