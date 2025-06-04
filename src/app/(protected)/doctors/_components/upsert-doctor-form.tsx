@@ -1,10 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
+import { toast } from "sonner";
 import z from "zod";
 
+import { upsertDoctor } from "@/actions/upsert-doctor";
 import { Button } from "@/components/ui/button";
 import {
   DialogContent,
@@ -32,6 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// import { doctorsTable } from "@/db/schema";
 import { medicalSpecialties } from "../_constants";
 
 const formSchema = z
@@ -46,7 +50,7 @@ const formSchema = z
       message: "Preço da consulta é obrigatório",
     }),
     availableFromWeekDay: z.string(),
-    avalableToWeekDay: z.string(),
+    availableToWeekDay: z.string(),
     availableFromTime: z.string().trim().min(1, {
       message: "Horário de início é obrigatório",
     }),
@@ -68,7 +72,12 @@ const formSchema = z
     },
   );
 
-const UpsertDoctorForm = () => {
+interface UpsertDoctorFormProps {
+  onSuccess?: () => void;
+  // doctor?: typeof doctorsTable.$inferSelect;
+}
+
+const UpsertDoctorForm = ({ onSuccess }: UpsertDoctorFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,14 +85,49 @@ const UpsertDoctorForm = () => {
       specialty: "",
       appointmentPrice: 0,
       availableFromWeekDay: "1",
-      avalableToWeekDay: "5",
+      availableToWeekDay: "5",
       availableFromTime: "",
       availableToTime: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const upsertDoctorAction = useAction(upsertDoctor, {
+    onSuccess: (response) => {
+      if (response.data?.success && response.data?.data) {
+        console.log("Médico cadastrado com sucesso:", response.data.data);
+        toast.success("Médico cadastrado com sucesso");
+        onSuccess?.();
+      } else {
+        const errorMessage = response.data?.error || "Erro ao cadastrar médico";
+        console.error("Erro ao cadastrar médico:", errorMessage);
+        toast.error(errorMessage);
+      }
+    },
+    onError: (error) => {
+      console.error("Erro na requisição:", error);
+      toast.error("Erro ao cadastrar médico");
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const appointmentPriceInCents = Math.round(values.appointmentPrice * 100);
+      const formData = {
+        name: values.name,
+        specialty: values.specialty,
+        availableFromWeekDay: parseInt(values.availableFromWeekDay),
+        availableToWeekDay: parseInt(values.availableToWeekDay),
+        availableFromTime: values.availableFromTime,
+        availableToTime: values.availableToTime,
+        appointmentPriceInCents,
+      };
+
+      console.log("Enviando dados:", formData);
+      await upsertDoctorAction.execute(formData);
+    } catch (error) {
+      console.error("Erro ao enviar formulário:", error);
+      toast.error("Erro ao enviar formulário");
+    }
   };
 
   return (
@@ -200,7 +244,7 @@ const UpsertDoctorForm = () => {
 
             <FormField
               control={form.control}
-              name="avalableToWeekDay"
+              name="availableToWeekDay"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Dia final de disponibilidade</FormLabel>
@@ -368,7 +412,9 @@ const UpsertDoctorForm = () => {
             />
 
             <DialogFooter>
-              <Button type="submit">Cadastrar</Button>
+              <Button type="submit" disabled={upsertDoctorAction.isPending}>
+                Cadastrar
+              </Button>
             </DialogFooter>
           </form>
         </Form>
