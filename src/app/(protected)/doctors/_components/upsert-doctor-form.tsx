@@ -34,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { doctorsTable } from "@/db/schema";
 
 // import { doctorsTable } from "@/db/schema";
 import { medicalSpecialties } from "../_constants";
@@ -74,20 +75,22 @@ const formSchema = z
 
 interface UpsertDoctorFormProps {
   onSuccess?: () => void;
-  // doctor?: typeof doctorsTable.$inferSelect;
+  doctor?: typeof doctorsTable.$inferSelect;
 }
 
-const UpsertDoctorForm = ({ onSuccess }: UpsertDoctorFormProps) => {
+const UpsertDoctorForm = ({ onSuccess, doctor }: UpsertDoctorFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      specialty: "",
-      appointmentPrice: 0,
-      availableFromWeekDay: "1",
-      availableToWeekDay: "5",
-      availableFromTime: "",
-      availableToTime: "",
+      name: doctor?.name || "",
+      specialty: doctor?.specialty || "",
+      appointmentPrice: doctor?.appointmentPriceInCents
+        ? doctor.appointmentPriceInCents / 100
+        : 0,
+      availableFromWeekDay: doctor?.availableFromWeekDay?.toString() || "1",
+      availableToWeekDay: doctor?.availableToWeekDay?.toString() || "5",
+      availableFromTime: doctor?.availableFromTime || "",
+      availableToTime: doctor?.availableToTime || "",
     },
   });
 
@@ -114,6 +117,7 @@ const UpsertDoctorForm = ({ onSuccess }: UpsertDoctorFormProps) => {
       const appointmentPriceInCents = Math.round(values.appointmentPrice * 100);
       const formData = {
         name: values.name,
+        id: doctor?.id,
         specialty: values.specialty,
         availableFromWeekDay: parseInt(values.availableFromWeekDay),
         availableToWeekDay: parseInt(values.availableToWeekDay),
@@ -134,10 +138,12 @@ const UpsertDoctorForm = ({ onSuccess }: UpsertDoctorFormProps) => {
     <div>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Cadastrar Médico</DialogTitle>
+          <DialogTitle>{doctor ? doctor.name : "Adicionar Médico"}</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Preencha os campos abaixo para cadastrar um novo médico.
+          {doctor
+            ? "Edite as informações desse médico"
+            : "Preencha os campos abaixo para cadastrar um novo médico."}
         </DialogDescription>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -413,7 +419,11 @@ const UpsertDoctorForm = ({ onSuccess }: UpsertDoctorFormProps) => {
 
             <DialogFooter>
               <Button type="submit" disabled={upsertDoctorAction.isPending}>
-                Cadastrar
+                {upsertDoctorAction.isPending
+                  ? "Salvando..."
+                  : doctor
+                    ? "Salvar"
+                    : "Adicionar"}
               </Button>
             </DialogFooter>
           </form>
