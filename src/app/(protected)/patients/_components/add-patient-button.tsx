@@ -1,26 +1,35 @@
 "use client";
 
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
-import UpsertDoctorForm from "./upsert-doctor-form";
+import UpsertPatientForm from "./upsert-patient-form";
 
-const AddDoctorButton = () => {
+const AddPatientButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus />
-          Adicionar Médico
+          Adicionar Paciente
         </Button>
       </DialogTrigger>
-      <UpsertDoctorForm onSuccess={() => setIsOpen(false)} isOpen={isOpen} />
+      <UpsertPatientForm
+        onSuccess={() => {
+          setIsOpen(false);
+          router.refresh();
+        }}
+        isOpen={isOpen}
+      />
     </Dialog>
   );
 };
 
-export default AddDoctorButton;
+export default AddPatientButton;
