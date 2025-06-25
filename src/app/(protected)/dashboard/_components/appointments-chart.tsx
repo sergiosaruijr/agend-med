@@ -64,6 +64,7 @@ export function AppointmentsChart({
             accessibilityLayer
             data={chartData}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            style={{ shapeRendering: "geometricPrecision" }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -131,24 +132,24 @@ export function AppointmentsChart({
                 <stop
                   offset="5%"
                   stopColor="var(--color-desktop)"
-                  stopOpacity={0.8}
+                  stopOpacity={0.3}
                 />
                 <stop
                   offset="95%"
                   stopColor="var(--color-desktop)"
-                  stopOpacity={0.1}
+                  stopOpacity={0.3}
                 />
               </linearGradient>
               <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
                   stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
+                  stopOpacity={0.3}
                 />
                 <stop
                   offset="95%"
                   stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
+                  stopOpacity={0.3}
                 />
               </linearGradient>
             </defs>
@@ -159,7 +160,7 @@ export function AppointmentsChart({
               fill="var(--color-appointments)"
               fillOpacity={0.2}
               stroke="var(--color-appointments)"
-              strokeWidth={2}
+              strokeWidth={3}
             />
             <Area
               yAxisId="right"
@@ -168,7 +169,7 @@ export function AppointmentsChart({
               fill="var(--color-revenue)"
               fillOpacity={0.2}
               stroke="var(--color-revenue)"
-              strokeWidth={2}
+              strokeWidth={3}
             />
           </AreaChart>
         </ChartContainer>
