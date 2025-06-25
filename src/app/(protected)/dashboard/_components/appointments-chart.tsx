@@ -63,10 +63,7 @@ export function AppointmentsChart({
           <AreaChart
             accessibilityLayer
             data={chartData}
-            margin={{
-              left: 15,
-              right: 15,
-            }}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
