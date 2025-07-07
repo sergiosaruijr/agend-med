@@ -20,18 +20,23 @@ export const auth = betterAuth({
   },
   plugins: [
     customSession(async ({ user, session }) => {
+      // TODO: colocar cache
       const clinics = await db.query.usersToClinicsTable.findMany({
         where: eq(schema.usersToClinicsTable.userId, user.id),
         with: {
           clinic: true,
+          user: true,
         },
       });
-      //por enquanto, apenas uma clinica por usuario, caso seja necessario mais de uma, basta alterar o código
+
+      // TODO: Ao adaptar para o usuário ter múltiplas clínicas. Mudar esse código
       const clinic = clinics?.[0];
+
       return {
         ...session,
         user: {
           ...user,
+          plan: clinic?.user?.plan, //verificar dps
           clinic: clinic?.clinicId
             ? {
                 id: clinic?.clinicId,
@@ -44,6 +49,23 @@ export const auth = betterAuth({
   ],
   user: {
     modelName: "usersTable",
+    additionalFields: {
+      stripeCustomerId: {
+        type: "string",
+        fieldName: "stripeCustomerId",
+        required: false,
+      },
+      stripeSubscriptionId: {
+        type: "string",
+        fieldName: "stripeSubscriptionId",
+        required: false,
+      },
+      plan: {
+        type: "string",
+        fieldName: "plan",
+        required: false,
+      },
+    },
   },
   session: {
     modelName: "sessionsTable",
