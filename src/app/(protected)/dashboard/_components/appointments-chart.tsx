@@ -90,31 +90,30 @@ export function AppointmentsChart({
               tickFormatter={(value) => formatCurrencyInCents(value)}
             />
             <ChartTooltip
-              content={
+              content={(props) => (
                 <ChartTooltipContent
+                  {...props}
                   formatter={(value, name) => {
                     if (name === "revenue") {
                       return (
                         <>
-                          <div className="h-3 w-3 rounded bg-[#10B981]">
-                            <span className="text-muted-foreground">
-                              Faturamento:
-                            </span>
-                            <span className="font-semibold">
-                              {formatCurrencyInCents(Number(value))}
-                            </span>
-                          </div>
+                          <div className="h-3 w-3 rounded bg-[#10B981]" />
+                          <span className="text-muted-foreground">
+                            Faturamento:
+                          </span>
+                          <span className="font-semibold">
+                            {formatCurrencyInCents(Number(value))}
+                          </span>
                         </>
                       );
                     }
                     return (
                       <>
-                        <div className="h-3 w-3 rounded bg-[#0B68F7]">
-                          <span className="text-muted-foreground">
-                            Agendamentos:
-                          </span>
-                          <span className="font-semibold">{value}</span>
-                        </div>
+                        <div className="h-3 w-3 rounded bg-[#0B68F7]" />
+                        <span className="text-muted-foreground">
+                          Agendamentos:
+                        </span>
+                        <span className="font-semibold">{String(value)}</span>
                       </>
                     );
                   }}
@@ -127,7 +126,7 @@ export function AppointmentsChart({
                     return label;
                   }}
                 />
-              }
+              )}
             />
             <Area
               yAxisId="left"
