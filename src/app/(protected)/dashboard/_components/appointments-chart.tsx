@@ -1,7 +1,10 @@
 "use client";
 
+import "dayjs/locale/pt-br";
+
 import dayjs from "dayjs";
-import { DollarSignIcon } from "lucide-react";
+dayjs.locale("pt-br");
+import { DollarSign } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +37,7 @@ export function AppointmentsChart({
     const dataForDay = dailyAppointmentsData.find((item) => item.date === date);
     return {
       date: dayjs(date).format("DD/MM"),
+      fullDate: date,
       appointments: dataForDay?.appointments || 0,
       revenue: Number(dataForDay?.revenue || 0),
     };
@@ -52,26 +56,24 @@ export function AppointmentsChart({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center justify-items-center">
-          <DollarSignIcon />
-          <p className="ml-2">Agendamentos e Faturamento</p>
-        </CardTitle>
+      <CardHeader className="flex flex-row items-center gap-2">
+        <DollarSign />
+        <CardTitle>Agendamentos e Faturamento</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
-            accessibilityLayer
+            // accessibilityLayer
             data={chartData}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-            style={{ shapeRendering: "geometricPrecision" }}
+            // style={{ shapeRendering: "geometricPrecision" }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="date"
               tickLine={false}
-              axisLine={false}
               tickMargin={10}
+              axisLine={false}
             />
             <YAxis
               yAxisId="left"
@@ -127,49 +129,23 @@ export function AppointmentsChart({
                 />
               }
             />
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.3}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.3}
-                />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.3}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.3}
-                />
-              </linearGradient>
-            </defs>
             <Area
               yAxisId="left"
-              dataKey="appointments"
               type="monotone"
+              dataKey="appointments"
+              stroke="var(--color-appointments)"
               fill="var(--color-appointments)"
               fillOpacity={0.2}
-              stroke="var(--color-appointments)"
-              strokeWidth={3}
+              strokeWidth={2}
             />
             <Area
               yAxisId="right"
-              dataKey="revenue"
               type="monotone"
+              dataKey="revenue"
+              stroke="var(--color-revenue)"
               fill="var(--color-revenue)"
               fillOpacity={0.2}
-              stroke="var(--color-revenue)"
-              strokeWidth={3}
+              strokeWidth={2}
             />
           </AreaChart>
         </ChartContainer>

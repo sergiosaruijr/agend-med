@@ -55,7 +55,7 @@ export default async function Page() {
 
         {/* Pricing Card */}
         <div className="mx-auto mb-8 w-full max-w-md">
-          <SubscriptionCard userEmail={session.user.email} />
+          <SubscriptionCard userEmail={session?.user.email} />
         </div>
       </div>
     </div>
