@@ -1,19 +1,10 @@
 "use server";
 
-import { headers } from "next/headers";
 import Stripe from "stripe";
 
-import { auth } from "@/lib/auth";
-import { actionClient } from "@/lib/next-safe-actions";
+import { protectedActionClient } from "@/lib/next-safe-actions";
 
-const createStripeCheckout = actionClient.action(async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
-
+const createStripeCheckout = protectedActionClient.action(async ({ ctx }) => {
   if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error("Stripe secret key not found");
   }
@@ -28,7 +19,7 @@ const createStripeCheckout = actionClient.action(async () => {
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
     subscription_data: {
       metadata: {
-        userId: session.user.id,
+        userId: ctx.user.id,
       },
     },
     line_items: [

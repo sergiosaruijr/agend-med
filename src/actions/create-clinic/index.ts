@@ -1,26 +1,28 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 import { db } from "@/db";
 import { clinicsTable, usersToClinicsTable } from "@/db/schema";
-import { auth } from "@/lib/auth";
+import { protectedActionClient } from "@/lib/next-safe-actions";
 
-export const createClinic = async (name: string) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
+export const createClinic = protectedActionClient
+  .schema(
+    z.object({
+      name: z.string().min(1, "Nome é obrigatório"),
+    }),
+  )
+  .action(async ({ parsedInput, ctx }) => {
+    const clinic = await db
+      .insert(clinicsTable)
+      .values({ name: parsedInput.name })
+      .returning();
+
+    await db.insert(usersToClinicsTable).values({
+      userId: ctx.user.id,
+      clinicId: clinic[0].id,
+    });
+
+    redirect("/dashboard");
   });
-
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
-
-  const clinic = await db.insert(clinicsTable).values({ name }).returning();
-
-  await db.insert(usersToClinicsTable).values({
-    userId: session?.user.id,
-    clinicId: clinic[0].id,
-  });
-  redirect("/dashboard");
-};

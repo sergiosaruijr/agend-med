@@ -3,20 +3,18 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
 
 import { db } from "@/db";
 import { doctorsTable } from "@/db/schema";
-import { auth } from "@/lib/auth";
-import { actionClient } from "@/lib/next-safe-actions";
+import { protectedWithClinicActionClient } from "@/lib/next-safe-actions";
 
 import { upsertDoctorSchema } from "./schema";
 
 dayjs.extend(utc);
 
-export const upsertDoctor = actionClient
+export const upsertDoctor = protectedWithClinicActionClient
   .schema(upsertDoctorSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx }) => {
     try {
       const availableFromTime = parsedInput.availableFromTime;
       const availableToTime = parsedInput.availableToTime;
@@ -32,24 +30,13 @@ export const upsertDoctor = actionClient
         .set("second", parseInt(availableToTime.split(":")[2]))
         .utc();
 
-      const session = await auth.api.getSession({
-        headers: await headers(),
-      });
-
-      if (!session?.user) {
-        throw new Error("Unauthorized");
-      }
-      if (!session.user.clinic?.id) {
-        throw new Error("Clinic not found");
-      }
-
       console.log("Dados recebidos para inserção:", parsedInput);
-      console.log("ID da clínica:", session.user.clinic.id);
+      console.log("ID da clínica:", ctx.user.clinic.id);
 
       const insertData = {
         id: parsedInput.id,
         ...parsedInput,
-        clinicId: session.user.clinic.id,
+        clinicId: ctx.user.clinic.id,
         availableFromTime: availableFromTimeUtc.format("HH:mm:ss"),
         availableToTime: availableToTimeUtc.format("HH:mm:ss"),
       };

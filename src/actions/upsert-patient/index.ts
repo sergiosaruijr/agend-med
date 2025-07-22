@@ -1,26 +1,16 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { headers } from "next/headers";
 
 import { db } from "@/db";
 import { patientsTable } from "@/db/schema";
-import { auth } from "@/lib/auth";
-import { actionClient } from "@/lib/next-safe-actions";
+import { protectedWithClinicActionClient } from "@/lib/next-safe-actions";
 
 import { upsertPatientSchema } from "./schema";
 
-export const upsertPatient = actionClient
+export const upsertPatient = protectedWithClinicActionClient
   .schema(upsertPatientSchema)
-  .action(async ({ parsedInput }) => {
-    const session = await auth.api.getSession({ headers: await headers() });
-    if (!session?.user || !session.user.clinic) {
-      return {
-        success: false,
-        error: "Usuário não autenticado ou clínica não encontrada.",
-      };
-    }
-
+  .action(async ({ parsedInput, ctx }) => {
     const { id, name, email, phoneNumber, sex } = parsedInput;
     let patient;
 
@@ -41,7 +31,7 @@ export const upsertPatient = actionClient
           email,
           phoneNumber,
           sex,
-          clinicId: session.user.clinic.id,
+          clinicId: ctx.user.clinic.id,
         })
         .returning();
       patient = inserted[0];
