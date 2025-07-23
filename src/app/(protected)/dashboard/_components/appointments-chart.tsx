@@ -57,11 +57,11 @@ export function AppointmentsChart({
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2">
-        <DollarSign />
+        <DollarSign className="h-6 w-6" />
         <CardTitle>Agendamentos e Faturamento</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="min-h-[200px]">
           <AreaChart
             // accessibilityLayer
             data={chartData}

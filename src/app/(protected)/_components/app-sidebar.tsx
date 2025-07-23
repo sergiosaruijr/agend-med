@@ -82,20 +82,22 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="border-b p-4">
-        <div className="flex items-center gap-2">
-          <Image src="/logo.svg" alt="logo" width={28} height={28} />
+        <div className="flex items-center gap-2 select-none">
+          <Image src="/logo.svg" alt="Agend Med" width={28} height={28} />
           <h2 className={`${nunito.className} text-xl font-bold`}>Agend Med</h2>
         </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
+          <SidebarGroupLabel className="select-none">
+            Menu Principal
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url}>
+                    <Link href={item.url} className="select-none">
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
@@ -106,7 +108,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Outros</SidebarGroupLabel>
+          <SidebarGroupLabel className="select-none">Outros</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -114,7 +116,7 @@ export function AppSidebar() {
                   asChild
                   isActive={pathname === "/subscription"}
                 >
-                  <Link href="/subscription">
+                  <Link href="/subscription" className="select-none">
                     <Gem />
                     <span>Assinatura</span>
                   </Link>
@@ -129,8 +131,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton size="lg">
-                  <Avatar className="0 flex items-center justify-center bg-zinc-400">
+                <SidebarMenuButton size="lg" className="select-none">
+                  <Avatar className="flex items-center justify-center bg-zinc-400">
                     <AvatarFallback>F</AvatarFallback>
                   </Avatar>
                   <div>
