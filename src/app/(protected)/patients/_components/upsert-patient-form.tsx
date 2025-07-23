@@ -79,11 +79,12 @@ const UpsertPatientForm = ({
         toast.success("Paciente salvo com sucesso");
         onSuccess?.();
       } else {
-        const errorMessage =
-          (result && result.error) ||
-          JSON.stringify(response) ||
-          "Erro ao salvar paciente";
-        toast.error(errorMessage);
+        // const errorMessage =
+        //   (result && result.error) ||
+        //   JSON.stringify(response) ||
+        //   "Erro ao salvar paciente";
+        // toast.error(errorMessage);
+        toast.error("Erro ao salvar paciente");
       }
     },
     onError: () => {
