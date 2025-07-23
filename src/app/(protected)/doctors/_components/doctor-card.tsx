@@ -69,27 +69,34 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Avatar className="h-10 w-10">
+          <Avatar className="h-10 w-10 flex-shrink-0">
             <AvatarFallback>{doctorInitials}</AvatarFallback>
           </Avatar>
-          <div>
-            <h3 className="text-sm font-medium">{doctor.name}</h3>
-            <p className="text-muted-foreground text-sm">{doctor.specialty}</p>
+          <div className="min-w-0 flex-1">
+            <h3 className="truncate text-sm font-medium">{doctor.name}</h3>
+            <p className="text-muted-foreground truncate text-sm">
+              {doctor.specialty}
+            </p>
           </div>
         </div>
       </CardHeader>
       <Separator />
       <CardContent className="flex flex-col gap-2">
-        <Badge variant="outline">
-          <CalendarIcon className="mr-1" />
-          {availability.from.format("dddd")} a {availability.to.format("dddd")}
+        <Badge variant="outline" className="truncate text-xs">
+          <CalendarIcon className="mr-1 h-3 w-3 flex-shrink-0" />
+          <span className="truncate">
+            {availability.from.format("dddd")} a{" "}
+            {availability.to.format("dddd")}
+          </span>
         </Badge>
-        <Badge variant="outline">
-          <ClockIcon className="mr-1" />
-          {availability.from.format("HH:mm")} as{" "}
-          {availability.to.format("HH:mm")}
+        <Badge variant="outline" className="text-xs">
+          <ClockIcon className="mr-1 h-3 w-3 flex-shrink-0" />
+          <span>
+            {availability.from.format("HH:mm")} às{" "}
+            {availability.to.format("HH:mm")}
+          </span>
         </Badge>
-        <Badge variant="outline">
+        <Badge variant="outline" className="text-xs">
           {formatCurrencyInCents(doctor.appointmentPriceInCents / 100)}
         </Badge>
       </CardContent>
@@ -100,7 +107,9 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
           onOpenChange={setIsUpsertDoctorDialogOpen}
         >
           <DialogTrigger asChild>
-            <Button className="w-full">Ver Detalhes</Button>
+            <Button className="w-full" size="sm">
+              Ver Detalhes
+            </Button>
           </DialogTrigger>
           <UpsertDoctorForm
             doctor={{
@@ -114,9 +123,9 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
         </Dialog>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="outline">
-              <TrashIcon />
-              Deletar Médico
+            <Button variant="outline" size="sm" className="w-full">
+              <TrashIcon className="h-4 w-4" />
+              <span className="truncate">Deletar Médico</span>
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>

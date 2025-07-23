@@ -63,10 +63,8 @@ export function AppointmentsChart({
       <CardContent>
         <ChartContainer config={chartConfig} className="min-h-[200px]">
           <AreaChart
-            // accessibilityLayer
             data={chartData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-            // style={{ shapeRendering: "geometricPrecision" }}
+            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
