@@ -34,7 +34,7 @@ const ClinicForm = () => {
 
   const onSubmit = async (data: z.infer<typeof clinicFormSchema>) => {
     try {
-      await createClinic(data.name);
+      await createClinic({ name: data.name });
       toast.success("Clínica criada com sucesso");
       form.reset();
     } catch (error) {
