@@ -14,11 +14,10 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard",
-    "/patients",
-    "/doctors",
-    "/appointments",
-    "/subscription",
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/dashboard/:path*",
+    "/patients/:path*",
+    "/doctors/:path*",
+    "/appointments/:path*",
+    "/subscription/:path*",
   ],
 };
