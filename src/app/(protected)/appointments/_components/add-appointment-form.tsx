@@ -332,7 +332,11 @@ const AddAppointmentForm = ({
           />
 
           <DialogFooter>
-            <Button type="submit" disabled={createAppointmentAction.isPending}>
+            <Button
+              type="submit"
+              disabled={createAppointmentAction.isPending}
+              className="select-none"
+            >
               {createAppointmentAction.isPending
                 ? "Criando..."
                 : "Criar agendamento"}
