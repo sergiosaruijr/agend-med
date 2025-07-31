@@ -23,7 +23,7 @@ const WithAuthentication = async ({
   }
 
   if (mustHavePlan && !session.user.plan) {
-    redirect("/new-subscription");
+    redirect("/plan");
   }
 
   if (mustHaveClinic && !session.user.clinic) {

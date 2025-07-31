@@ -24,11 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${manrope.variable} antialiased`}>
-        <ReactQueryProvider>
-          <NuqsAdapter>{children}</NuqsAdapter>
-        </ReactQueryProvider>
+    <html lang="pt-BR" className="h-full">
+      <body className={`${manrope.variable} h-full antialiased`}>
+        <div className="h-full">
+          <ReactQueryProvider>
+            <NuqsAdapter>{children}</NuqsAdapter>
+          </ReactQueryProvider>
+        </div>
         <Toaster position="bottom-center" richColors theme="light" />
       </body>
     </html>

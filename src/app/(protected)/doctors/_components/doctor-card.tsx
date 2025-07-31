@@ -140,7 +140,10 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancelar</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteDoctorClick}>
+              <AlertDialogAction
+                onClick={handleDeleteDoctorClick}
+                className="select-none"
+              >
                 Deletar
               </AlertDialogAction>
             </AlertDialogFooter>

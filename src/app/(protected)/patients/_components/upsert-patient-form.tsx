@@ -199,7 +199,11 @@ const UpsertPatientForm = ({
           />
 
           <DialogFooter>
-            <Button type="submit" disabled={form.formState.isSubmitting}>
+            <Button
+              type="submit"
+              disabled={form.formState.isSubmitting}
+              className="select-none"
+            >
               Salvar
             </Button>
           </DialogFooter>

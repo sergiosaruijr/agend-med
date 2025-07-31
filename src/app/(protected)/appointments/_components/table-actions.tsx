@@ -92,7 +92,10 @@ const AppointmentsTableActions = ({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancelar</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteAppointmentClick}>
+              <AlertDialogAction
+                onClick={handleDeleteAppointmentClick}
+                className="select-none"
+              >
                 Deletar
               </AlertDialogAction>
             </AlertDialogFooter>

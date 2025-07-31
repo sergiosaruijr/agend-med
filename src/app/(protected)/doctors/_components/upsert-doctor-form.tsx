@@ -444,7 +444,11 @@ const UpsertDoctorForm = ({
               {/* {doctor && (
                 
               )} */}
-              <Button type="submit" disabled={upsertDoctorAction.isPending}>
+              <Button
+                type="submit"
+                disabled={upsertDoctorAction.isPending}
+                className="select-none"
+              >
                 {upsertDoctorAction.isPending
                   ? "Salvando..."
                   : doctor

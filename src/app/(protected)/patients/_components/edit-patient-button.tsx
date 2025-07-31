@@ -56,7 +56,7 @@ const EditPatientButton = ({ patient }: EditPatientButtonProps) => {
       </DialogTrigger>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outline">
+          <Button variant="outline" className="select-none">
             <TrashIcon />
             Deletar Médico
           </Button>
@@ -73,7 +73,10 @@ const EditPatientButton = ({ patient }: EditPatientButtonProps) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeletePatientClick}>
+            <AlertDialogAction
+              onClick={handleDeletePatientClick}
+              className="select-none"
+            >
               Deletar
             </AlertDialogAction>
           </AlertDialogFooter>

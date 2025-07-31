@@ -4,9 +4,9 @@ import { AppSidebar } from "./_components/app-sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="h-full">
       <AppSidebar />
-      <main className="w-full">
+      <main className="h-full w-full">
         <SidebarTrigger />
         {children}
       </main>

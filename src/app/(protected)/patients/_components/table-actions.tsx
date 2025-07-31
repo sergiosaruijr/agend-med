@@ -86,7 +86,10 @@ const PatientsTableActions = ({ patient }: PatientsTableActionsProps) => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeletePatientClick}>
+                <AlertDialogAction
+                  onClick={handleDeletePatientClick}
+                  className="select-none"
+                >
                   Deletar
                 </AlertDialogAction>
               </AlertDialogFooter>
