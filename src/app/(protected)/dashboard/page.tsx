@@ -43,11 +43,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
       `/dashboard?from=${dayjs().format("YYYY-MM-DD")}&to=${dayjs().add(1, "month").format("YYYY-MM-DD")}`,
     );
   }
-  const clinicId = session?.user?.clinic?.id;
-
-  if (!clinicId) {
-    throw new Error("Clinic ID not found in session.");
-  }
+  const clinicId = session?.user?.clinic?.id as string;
   const {
     totalRevenue,
     totalAppointments,
