@@ -66,7 +66,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
   });
 
   return (
-    <WithAuthentication mustHavePlan mustHaveClinic>
+    <WithAuthentication mustHaveClinic>
       <PageContainer>
         <PageHeader>
           <PageHeaderContent>
