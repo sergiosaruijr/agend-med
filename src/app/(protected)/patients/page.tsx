@@ -30,7 +30,7 @@ const PatientsPage = async () => {
   });
 
   return (
-    <WithAuthentication mustHavePlan mustHaveClinic>
+    <WithAuthentication mustHaveClinic>
       <PageContainer>
         <PageHeader>
           <PageHeaderContent>

@@ -11,7 +11,7 @@ import ClinicForm from "./_components/form";
 
 const ClinicFormPage = async () => {
   return (
-    <WithAuthentication mustHavePlan>
+    <WithAuthentication>
       <div>
         <Dialog open={true}>
           <DialogContent className="sm:max-w-[425px]">
